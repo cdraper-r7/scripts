@@ -1,9 +1,7 @@
 #/bin/bash
 
-#breach query script
-#phonebook.cz
-#dnsdumpster
-
+# Add API.txt file instead of having to manually enter it every time
+# change ability to enter folder name seperate from domain
 
 echo "Enter company domain (ex. tesla.com)"
 read -p 'Domain: ' domain
@@ -38,6 +36,10 @@ cat $companypath/breach.txt | cut -d "@" -f1 | grep "\." | sed -r 's/(.)\S*\.(.*
 sort -u $companypath/possible_breach_tmp.txt > $companypath/possible_breach_users.txt
 rm $companypath/possible_breach_tmp.txt
 
+#BreachDB Passwords Only
+cat $companypath/breach.txt | cut -d " " -f2 > $companypath/breach-pass.txt
+pipal $companypath/breach-pass.txt > breach-pass-pipal.txt
+
 ##Create Password Spray List
 mkdir -p $companypath/spray
 cd $companypath/spray
@@ -61,7 +63,6 @@ firefox "https://web.archive.org/web/*/$domain/*"&
 echo "Search wayback search for pwd bak skr pgp config psw inc mdb conf dat eml log"
 #github.com/tomnomnom/waybackurls waybackurls <target> | grep "\.js" 
 sleep 1
-
 
 ### MANUAL SEARCHES ###
 echo "Domain is: $domain"
