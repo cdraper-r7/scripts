@@ -8,9 +8,13 @@ echo "`cat ntds.all | wc -l` enabled user hashes gathered" > summary.txt
 cat ntds.all | cut -d : -f4 > ntds.nt.hashtopolis
 echo "`cat ntds.nt.hashtopolis | sort -u | wc -l` unique user password hashes" >> summary.txt
 
-#LM Hashes enabled
-cat $1 | grep -av 'aad3b435b51404eeaad3b435b51404ee' | cut -d : -f1 > ntds.lm.hash.accounts
-echo "`cat ntds.lm.hash.accounts | wc -l` accounts with LM hashes enabled" >> summary.txt
+#All LM Hashes 
+cat $1 | grep -av 'aad3b435b51404eeaad3b435b51404ee' | cut -d : -f1 > ntds.lm.hash.accounts.all
+echo "`cat ntds.lm.hash.accounts.all | wc -l` total accounts with LM hashes" >> summary.txt
+
+#All LM Hashes 
+cat $1 | grep -av 'aad3b435b51404eeaad3b435b51404ee' | grep Enabled | cut -d : -f1 > ntds.lm.hash.accounts.enabled
+echo "`cat ntds.lm.hash.accounts.enabled | wc -l` enabled accounts with LM hashes" >> summary.txt
 
 #Add script for creating crackable LM file
 cat $1 | grep -av 'aad3b435b51404eeaad3b435b51404ee' | cut -d : -f3 | fold -w 16 > ntds.lm.hashtopolis
