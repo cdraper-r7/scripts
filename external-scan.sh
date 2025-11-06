@@ -149,15 +149,19 @@ cat nuclei.txt | grep header | grep -iE "strit-transport|content-type|frame-opti
 
 
 #ffuf
-mkdir -p $companypath/nmap/results/ffuf
-cd $companypath/nmap/results/ffuf
-#while read -r line; do dirb $line; done < $companypath/nmap/parsed/web-urls.txt | tee $companypath/nmap/results/dirb.txt
-#ffuf -w /usr/share/wordlists/dirb/common.txt -u $line/FUZZ -o ffuf-
-#ffuf -w web-urls.txt:TARGET -w /usr/share/wordlists/dirb/common.txt -u TARGET/FUZZ
-#interlace -tL <domain list> -c "ffuf -u _target_ -w /usr/share/wordlists/dirb/common.txt -se -sf -mc all -fc 300,301,302,303,500,400,404 | tee ffuf/$url.txt
-#interlace -tL $companypath/nmap/parsed/web-urls.txt -c "ffuf -u _target_ -w /usr/share/wordlists/dirb/common.txt -se -sf -mc all -fc 300,301,302,303,500,400,404 | tee ffuf/$url.txt
-#while read -r line; do proxychains -q ffuf -w /usr/share/wordlists/dirb/common.txt -u $line''FUZZ -maxtime-job 3600 -se -sf -mc all -fc 300,301,302,303,500,400,404 | tee $companypath/nmap/results/ffuf/`echo $line | sed 's/\///g'`; done < $companypath/nmap/parsed/web-urls.txt
-parallel -a $companypath/nmap/parsed/web-urls.txt --progress -j 1 "ffuf -w /usr/share/wordlists/dirb/common.txt -u {}FUZZ -maxtime-job 3600 -noninteractive -se -sf -mc all -fc 300,301,302,303,500,400,404 > {=s/\///g=}"
+#mkdir -p $companypath/nmap/results/ffuf
+#cd $companypath/nmap/results/ffuf
+##while read -r line; do dirb $line; done < $companypath/nmap/parsed/web-urls.txt | tee $companypath/nmap/results/dirb.txt
+##ffuf -w /usr/share/wordlists/dirb/common.txt -u $line/FUZZ -o ffuf-
+##ffuf -w web-urls.txt:TARGET -w /usr/share/wordlists/dirb/common.txt -u TARGET/FUZZ
+##interlace -tL <domain list> -c "ffuf -u _target_ -w /usr/share/wordlists/dirb/common.txt -se -sf -mc all -fc 300,301,302,303,500,400,404 | tee ffuf/$url.txt
+##interlace -tL $companypath/nmap/parsed/web-urls.txt -c "ffuf -u _target_ -w /usr/share/wordlists/dirb/common.txt -se -sf -mc all -fc 300,301,302,303,500,400,404 | tee ffuf/$url.txt
+##while read -r line; do proxychains -q ffuf -w /usr/share/wordlists/dirb/common.txt -u $line''FUZZ -maxtime-job 3600 -se -sf -mc all -fc 300,301,302,303,500,400,404 | tee $companypath/nmap/results/ffuf/`echo $line | sed 's/\///g'`; done < $companypath/nmap/parsed/web-urls.txt
+#parallel -a $companypath/nmap/parsed/web-urls.txt --progress -j 1 "ffuf -w /usr/share/wordlists/dirb/common.txt -u {}FUZZ -maxtime-job 3600 -noninteractive -se -sf -mc all -fc 300,301,302,303,500,400,404 > {=s/\///g=}"
 
+#ferox
+mkdir -p $companypath/nmap/results/ferox
+cd $companypath/nmap/results/ferox
+cat $companypath/nmap/parsed/web-urls.txt | feroxbuster --stdin --silent -s 200 301 302 --dont-scan ".(png|jpg|mp3|mp4|css|js)$" --filter-regex ".(png|jpg|mp3|mp4|css|js)$" -o ferox.txt
 
 echo "SCRIPT COMPLETED!!!"
